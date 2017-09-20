@@ -15,9 +15,13 @@ int main(int , char ** )
     noyauCalcul();
 
     // TODO cree deux threads qui affiche leur id
-
+    std::thread thread1(noyauCalcul);
+    std::thread thread2(noyauCalcul);
+    
     // TODO attend la fin de l'execution des threads
-
+    thread1.join();
+    thread2.join();
+    
     return 0;
 }
 
