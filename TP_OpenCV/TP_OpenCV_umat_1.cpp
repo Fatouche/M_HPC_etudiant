@@ -28,13 +28,28 @@ int main(int argc, char ** argv)
         timePoint_t tp0 = now();
 
         // TODO read image
+	cv::Mat img = cv::imread(filename);
+	cv::UMat imgGpu;
+	img.copyTo(imgGpu);
+	timePoint_t tp1 = now();
 
+	
         // TODO compute gaussian blur
+	cv::UMat imgGpu2;
+	cv::GaussianBlur(imgGpu, imgGpu2, cv::Size(blurSize,blurSize), blurSigma, blurSigma);
+	timePoint_t tp2 = now();
 
+	
         // TODO write image
-
-        timePoint_t tp3 = now();
-        std::cout << "  total: " << duration(tp0, tp3) << " s\n";
+	cv::imwrite("imgModifier.png", imgGpu2);
+	timePoint_t tp3 = now();
+	cv::imshow("ImgModifier",imgGpu2);
+	
+        timePoint_t tp4 = now();
+	std::cout << "  imread: " << duration(tp0, tp1) << " s\n";
+	std::cout << "  GaussianBlur: " << duration(tp0, tp2) << " s\n";
+	std::cout << "  inwrite: " << duration(tp0, tp3) << " s\n";
+        std::cout << "  total: " << duration(tp0, tp4) << " s\n";
     }
 
     return 0;
