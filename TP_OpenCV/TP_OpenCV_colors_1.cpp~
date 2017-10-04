@@ -1,8 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include "utils.hpp"
 
-const double COEF = 0.5;
-
 int main(int argc, char ** argv) 
 { 
     if (argc != 2) 
@@ -22,6 +20,8 @@ int main(int argc, char ** argv)
         exit(-1);
     }
 
+    const double COEF = 0.5;
+
     // operator*=
     timePoint_t tpMul0 = now();
     cv::Mat imgMul = imgInput.clone();
@@ -30,50 +30,23 @@ int main(int argc, char ** argv)
 
     // foreach loop
     // TODO
-    timePoint_t tForeach = now();
 
-    cv::Mat imgForeach = imgInput.clone();
-    imgForeach.forEach<cv::Vec3b>([](cv::Vec3b &p, const int * position) -> void{
-	  p *= COEF;
-       });
-      
-    timePoint_t tForeach1 = now();
-
-    
     // 2D loop
     // TODO
-    timePoint_t tBoucle = now();
-    
-    cv::Mat imgLoop = imgInput.clone();
-    
-    for(int col = 0; col < imgLoop.rows; col++){
-      for(int ligne = 0; ligne < imgLoop.cols; ligne++){
-	//imgLoop.at<int>(col,ligne) *= COEF;
-	imgLoop.at<cv::Vec3b>(col,ligne) *= COEF; 
-      } 
-    }
-    
-    timePoint_t tBoucle1 = now();
-    
+
     // print computation times
     std::cout << "imgMul: " << duration(tpMul0, tpMul1) << " s\n";
     // TODO
-    std::cout << "imgLoop: " << duration(tBoucle, tBoucle1) << " s\n";
-    std::cout << "imgForEach: " << duration(tForeach, tForeach1) << " s\n";
-    
+
     // write image files
     imwrite(basename + "_imgMul" + extension, imgMul);
     // TODO
-    imwrite(basename + "_imgLoop" + extension, imgLoop);
-    imwrite(basename + "_imgForEach" + extension, imgForeach);
-    
+
     // display images
     cv::imshow("imgInput", imgInput);
     cv::imshow("imgMul", imgMul);
     // TODO
-    cv::imshow("imgLoop", imgLoop);
-    cv::imshow("imgForEach", imgForeach);
-      
+
     // wait for "esc"
     while (true)
     {
